@@ -18,7 +18,7 @@ class ListPicturesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_pictures)
 
-        val rv = findViewById<RecyclerView>(R.id.rv_list_picture)
+        val rv = findViewById<RecyclerView>(R.id.rv_pictures_list)
 
         rv.setHasFixedSize(true)
 

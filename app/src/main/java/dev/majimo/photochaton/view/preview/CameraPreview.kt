@@ -264,7 +264,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
     ): View? = inflater.inflate(R.layout.fragment_camera_preview, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.findViewById<View>(R.id.picture).setOnClickListener(this)
+        view.findViewById<View>(R.id.btn_take_picture).setOnClickListener(this)
         textureView = view.findViewById(R.id.texture)
     }
 
@@ -692,7 +692,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.picture -> lockFocus()
+            R.id.btn_take_picture -> lockFocus()
             R.id.info -> {
                 if (activity != null) {
                     AlertDialog.Builder(activity)

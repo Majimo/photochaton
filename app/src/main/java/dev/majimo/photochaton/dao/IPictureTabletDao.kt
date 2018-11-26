@@ -1,11 +1,19 @@
 package dev.majimo.photochaton.dao
 
+import android.arch.lifecycle.LiveData
+import android.arch.persistence.room.Dao
+import android.arch.persistence.room.Insert
+import android.arch.persistence.room.Query
 import dev.majimo.photochaton.model.Picture
 
+@Dao
 interface IPictureTabletDao {
+    @Insert
     fun insert(picture: Picture)
 
-    fun get(id: Int): Picture
+    @Query("SELECT * FROM Picture WHERE id = :id")
+    fun get(id: Int): LiveData<Picture>
 
-    fun getAll(): List<Picture>
+    @Query("SELECT * FROM Picture")
+    fun getAll(): LiveData<List<Picture>>
 }

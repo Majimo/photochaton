@@ -3,7 +3,11 @@
     package="dev.majimo.photochaton">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -19,8 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.TakePictureActivity" />
+        <activity
+            android:name=".view.TakePictureActivity"
+            android:screenOrientation="landscape"></activity>
         <activity android:name=".view.ListPicturesActivity"></activity>
+        <activity android:name=".view.PictureActivity"></activity>
     </application>
 
 </manifest>

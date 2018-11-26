@@ -9,7 +9,8 @@ import dev.majimo.photochaton.model.Picture
 @Database(entities = arrayOf(Picture::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract val dao : IPictureTabletDao
+    abstract val daoTablet : IPictureTabletDao
+    abstract val daoFirebase : IPictureFirebaseDao
 
     companion object {
         var instance : AppDatabase? = null

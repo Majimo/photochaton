@@ -38,6 +38,6 @@ class PictureAdapter (val context: Context) : RecyclerView.Adapter<PictureAdapte
     }
 
     class PictureViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-        val iv_picture = view.findViewById<ImageView>(R.id.tv_pictures)
+        val iv_picture = view.findViewById<ImageView>(R.id.iv_picture)
     }
 }

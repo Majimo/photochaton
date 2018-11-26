@@ -70,4 +70,9 @@ dependencies {
     implementation "android.arch.persistence.room:guava:$room_version"
     // Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
+
+
+    //FIREBASE
+    implementation 'com.google.firebase:firebase-storage:11.8.0'
+    implementation 'com.google.firebase:firebase-auth:11.8.0'
 }

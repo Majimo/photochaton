@@ -11,7 +11,7 @@ import dev.majimo.photochaton.R
  class PictureAdapter (val items : ArrayList<String>, val context: Context) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
 
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
-        holder?.tv_pictures.text = items.get(position)
+        holder?.iv_picture.text = items.get(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
@@ -23,6 +23,6 @@ import dev.majimo.photochaton.R
     }
 
     class PictureViewHolder (view: View) : RecyclerView.ViewHolder(view) {
-        val tv_pictures = view.findViewById<TextView>(R.id.tv_pictures)
+        val iv_picture = view.findViewById<TextView>(R.id.iv_picture)
     }
 }

@@ -25,11 +25,11 @@ class ListPicturesActivity : MenuActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         val adapter = PictureAdapter(this)
+        rv.adapter = adapter
 
         val vm = ViewModelProviders.of(this).get(PictureViewModel::class.java)
 
         vm.getAll().observe(this, Observer<List<Picture>> {
-            Log.wtf("XXX", it?.get(0).toString())
             adapter.setPictures(it)
             adapter.notifyDataSetChanged()
         })

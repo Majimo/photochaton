@@ -10,11 +10,11 @@ import dev.majimo.photochaton.model.Picture
 class PictureRepository(context : Context) : IPictureRepository{
 
     var daoTablet : IPictureTabletDao = AppDatabase.getInstance(context)!!.daoTablet
-    var daoFirebase : IPictureFirebaseDao = AppDatabase.getInstance(context)!!.daoFirebase
+    // var daoFirebase : IPictureFirebaseDao = AppDatabase.getInstance(context)!!.daoFirebase
 
     override fun insert(picture: Picture) {
         daoTablet.insert(picture)
-        daoFirebase.insert(picture)
+        // daoFirebase.insert(picture)
     }
 
     override fun get(id: Int): LiveData<Picture> {

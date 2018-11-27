@@ -6,4 +6,4 @@ import java.sql.Timestamp
 import java.util.*
 
 @Entity
-class Picture (@PrimaryKey(autoGenerate = true)val id: Int, val url: String, val name: String, val createdAt: Timestamp)
+class Picture (@PrimaryKey(autoGenerate = true)val id: Int, val url: String, val name: String)

@@ -56,13 +56,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import dev.majimo.photochaton.R
+import dev.majimo.photochaton.service.FileService
+import dev.majimo.photochaton.service.IFileService
 
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Collections
+import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
@@ -198,6 +198,9 @@ class CameraPreview : Fragment(), View.OnClickListener,
      */
     private var sensorOrientation = 0
 
+    // CF ici pour capture d'image sur la preview
+
+
     /**
      * A [CameraCaptureSession.CaptureCallback] that handles events related to JPEG capture.
      */
@@ -206,7 +209,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
         private fun process(result: CaptureResult) {
             when (state) {
                 STATE_PREVIEW -> Unit // Do nothing when the camera preview is working normally.
-                STATE_WAITING_LOCK -> capturePicture(result)
+                STATE_WAITING_LOCK ->  Log.wtf("XXX", "STATE_WAITING_LOCK") // capturePicture(result)
                 STATE_WAITING_PRECAPTURE -> {
                     // CONTROL_AE_STATE can be null on some devices
                     val aeState = result.get(CaptureResult.CONTROL_AE_STATE)
@@ -214,6 +217,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
                             aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
                             aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
                         state = STATE_WAITING_NON_PRECAPTURE
+                        Log.wtf("XXX", "STATE_WAITING_PRECAPTURE")
                     }
                 }
                 STATE_WAITING_NON_PRECAPTURE -> {
@@ -221,25 +225,8 @@ class CameraPreview : Fragment(), View.OnClickListener,
                     val aeState = result.get(CaptureResult.CONTROL_AE_STATE)
                     if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
                         state = STATE_PICTURE_TAKEN
-                        captureStillPicture()
+                        Log.wtf("XXX", "STATE_WAITING_NON_PRECAPTURE")
                     }
-                }
-            }
-        }
-
-        private fun capturePicture(result: CaptureResult) {
-            val afState = result.get(CaptureResult.CONTROL_AF_STATE)
-            if (afState == null) {
-                captureStillPicture()
-            } else if (afState == CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED
-                    || afState == CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED) {
-                // CONTROL_AE_STATE can be null on some devices
-                val aeState = result.get(CaptureResult.CONTROL_AE_STATE)
-                if (aeState == null || aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
-                    state = STATE_PICTURE_TAKEN
-                    captureStillPicture()
-                } else {
-                    runPrecaptureSequence()
                 }
             }
         }
@@ -264,13 +251,16 @@ class CameraPreview : Fragment(), View.OnClickListener,
     ): View? = inflater.inflate(R.layout.fragment_camera_preview, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.findViewById<View>(R.id.picture).setOnClickListener(this)
+        view.findViewById<View>(R.id.btn_take_picture).setOnClickListener(this)
         textureView = view.findViewById(R.id.texture)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        file = File(activity?.getExternalFilesDir(null), PIC_FILE_NAME)
+        // FIXME UUID pas unique ?!
+        var fileService: IFileService = FileService()
+        file = fileService.createImageFile(activity?.getExternalFilesDir(null).toString())
+        // file = File(activity?.getExternalFilesDir(null), UUID.randomUUID().toString() + ".jpg") // PIC_FILE_NAME)
     }
 
     override fun onResume() {
@@ -583,67 +573,21 @@ class CameraPreview : Fragment(), View.OnClickListener,
         textureView.setTransform(matrix)
     }
 
-    /**
-     * Lock the focus as the first step for a still image capture.
-     */
-    private fun lockFocus() {
-        try {
-            // This is how to tell the camera to lock focus.
-            previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_START)
-            // Tell #captureCallback to wait for the lock.
-            state = STATE_WAITING_LOCK
-            captureSession?.capture(previewRequestBuilder.build(), captureCallback,
-                    backgroundHandler)
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, e.toString())
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.btn_take_picture -> takePicture()   // lockFocus()
         }
-
     }
 
-    /**
-     * Run the precapture sequence for capturing a still image. This method should be called when
-     * we get a response in [.captureCallback] from [.lockFocus].
-     */
-    private fun runPrecaptureSequence() {
-        try {
-            // This is how to tell the camera to trigger.
-            previewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
-                    CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START)
-            // Tell #captureCallback to wait for the precapture sequence to be set.
-            state = STATE_WAITING_PRECAPTURE
-            captureSession?.capture(previewRequestBuilder.build(), captureCallback,
-                    backgroundHandler)
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, e.toString())
-        }
-
-    }
-
-    /**
-     * Capture a still picture. This method should be called when we get a response in
-     * [.captureCallback] from both [.lockFocus].
-     */
-    private fun captureStillPicture() {
+    fun takePicture() {
+        Log.wtf("XXX", "Capture de photo")
         try {
             if (activity == null || cameraDevice == null) return
             val rotation = activity?.windowManager?.defaultDisplay?.rotation
 
-            // This is the CaptureRequest.Builder that we use to take a picture.
             val captureBuilder = cameraDevice?.createCaptureRequest(
                     CameraDevice.TEMPLATE_STILL_CAPTURE)?.apply {
                 addTarget(imageReader?.surface)
-
-                // Sensor orientation is 90 for most devices, or 270 for some devices (eg. Nexus 5X)
-                // We have to take that into account and rotate JPEG properly.
-                // For devices with orientation of 90, we return our mapping from ORIENTATIONS.
-                // For devices with orientation of 270, we need to rotate the JPEG 180 degrees.
-                set(CaptureRequest.JPEG_ORIENTATION,
-                        (ORIENTATIONS.get(rotation!!) + sensorOrientation + 270) % 360)
-
-                // Use the same AE and AF modes as the preview.
-                set(CaptureRequest.CONTROL_AF_MODE,
-                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
             }?.also { setAutoFlash(it) }
 
             val captureCallback = object : CameraCaptureSession.CaptureCallback() {
@@ -652,8 +596,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
                                                 request: CaptureRequest,
                                                 result: TotalCaptureResult) {
                     activity?.showToast("Saved: $file")
-                    Log.d(TAG, file.toString())
-                    unlockFocus()
+                    Log.d("XXX", file.toString())
                 }
             }
 
@@ -662,46 +605,11 @@ class CameraPreview : Fragment(), View.OnClickListener,
                 abortCaptures()
                 capture(captureBuilder?.build(), captureCallback, null)
             }
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, e.toString())
         }
-
-    }
-
-    /**
-     * Unlock the focus. This method should be called when still image capture sequence is
-     * finished.
-     */
-    private fun unlockFocus() {
-        try {
-            // Reset the auto-focus trigger
-            previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_CANCEL)
-            setAutoFlash(previewRequestBuilder)
-            captureSession?.capture(previewRequestBuilder.build(), captureCallback,
-                    backgroundHandler)
-            // After this, the camera will go back to the normal state of preview.
-            state = STATE_PREVIEW
-            captureSession?.setRepeatingRequest(previewRequest, captureCallback,
-                    backgroundHandler)
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, e.toString())
+        catch (e: IOException) {
+            Log.e("XXX", e.message)
         }
-
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.picture -> lockFocus()
-            R.id.info -> {
-                if (activity != null) {
-                    AlertDialog.Builder(activity)
-                            .setMessage("Message intro")
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show()
-                }
-            }
-        }
+        return;
     }
 
     private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {
@@ -729,7 +637,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
         /**
          * Tag for the [Log].
          */
-        private val TAG = "Camera2BasicFragment"
+        private val TAG = "CameraPreview"
 
         /**
          * Camera state: Showing camera preview.

@@ -14,56 +14,18 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FileService : IFileService{
+class FileService(name : String) : IFileService{
+    override fun createImageFile(url: String): File {
+        val format = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-")
 
-    var localImageFilePath = ""
-    private var mStorageRef: StorageReference? = null
-    internal var riversRef: StorageReference? = null
-
-    init {
-        mStorageRef = FirebaseStorage.getInstance().reference
+        return File(url + "/" + format + ".jpg")
     }
 
-
-    override fun createImageFile(context : Context): File? {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(Date())
-        val imageFileName = "IMG_" + timeStamp + "_"
-        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        var image: File? = null
-        try {
-            image = File.createTempFile(
-                    imageFileName, /* prefix */
-                    ".jpg", /* suffix */
-                    storageDir      /* directory */
-            )
-            localImageFilePath = image!!.absolutePath
-            return image
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        return null
-
+    override fun getImage(url : String): File {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun uploadImage(view: View) {
-        val file = Uri.fromFile(File(localImageFilePath))
-        riversRef = mStorageRef?.child("images/rivers.jpg")
-
-        riversRef?.putFile(file)
-                ?.addOnSuccessListener(object : OnSuccessListener<UploadTask.TaskSnapshot> {
-                    override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
-                        // Get a URL to the uploaded content
-                        val downloadUrl = taskSnapshot.getDownloadUrl()
-                    }
-                })
-                ?.addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(exception: Exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                })
+    override fun getAllImage(url: String): List<File> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 }

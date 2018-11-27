@@ -16,24 +16,16 @@ import java.util.*
 
 class FileService(name : String) : IFileService{
     override fun createImageFile(url: String): File {
+        val format = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-")
 
-        val format
-
-        var f = File(url)
+        return File(url + "/" + format + ".jpg")
     }
 
-    init {
-
+    override fun getImage(url : String): File {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getImage(url : String) {
-
+    override fun getAllImage(url: String): List<File> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    companion object {
-        fun createImage(url : String) : File{
-            return File("")
-        }
-    }
-
 }

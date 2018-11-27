@@ -10,7 +10,7 @@ import dev.majimo.photochaton.model.Picture
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val daoTablet : IPictureTabletDao
-    abstract val daoFirebase : IPictureFirebaseDao
+    // abstract val daoFirebase : IPictureFirebaseDao
 
     companion object {
         var instance : AppDatabase? = null

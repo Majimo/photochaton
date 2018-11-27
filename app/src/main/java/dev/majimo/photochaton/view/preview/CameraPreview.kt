@@ -198,8 +198,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
      */
     private var sensorOrientation = 0
 
-    // CF ici pour capture d'image sur la preview
-
+    private var fileService: IFileService = FileService()
 
     /**
      * A [CameraCaptureSession.CaptureCallback] that handles events related to JPEG capture.
@@ -253,14 +252,6 @@ class CameraPreview : Fragment(), View.OnClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.btn_take_picture).setOnClickListener(this)
         textureView = view.findViewById(R.id.texture)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // FIXME UUID pas unique ?!
-        var fileService: IFileService = FileService()
-        file = fileService.createImageFile(activity?.getExternalFilesDir(null).toString())
-        // file = File(activity?.getExternalFilesDir(null), UUID.randomUUID().toString() + ".jpg") // PIC_FILE_NAME)
     }
 
     override fun onResume() {
@@ -488,6 +479,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
      * Creates a new [CameraCaptureSession] for camera preview.
      */
     private fun createCameraPreviewSession() {
+
         try {
             val texture = textureView.surfaceTexture
 
@@ -574,13 +566,16 @@ class CameraPreview : Fragment(), View.OnClickListener,
     }
 
     override fun onClick(view: View) {
+
         when (view.id) {
-            R.id.btn_take_picture -> takePicture()   // lockFocus()
+            R.id.btn_take_picture -> takePicture()
         }
     }
 
     fun takePicture() {
-        Log.wtf("XXX", "Capture de photo")
+        // Création d'un nouveau fichier pour la prochaine photo
+        file = fileService.createImageFile(activity?.getExternalFilesDir(null).toString())
+
         try {
             if (activity == null || cameraDevice == null) return
             val rotation = activity?.windowManager?.defaultDisplay?.rotation
@@ -597,6 +592,8 @@ class CameraPreview : Fragment(), View.OnClickListener,
                                                 result: TotalCaptureResult) {
                     activity?.showToast("Saved: $file")
                     Log.d("XXX", file.toString())
+
+                    createCameraPreviewSession()
                 }
             }
 
@@ -609,7 +606,6 @@ class CameraPreview : Fragment(), View.OnClickListener,
         catch (e: IOException) {
             Log.e("XXX", e.message)
         }
-        return;
     }
 
     private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {

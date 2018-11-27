@@ -14,7 +14,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FileService(name : String) : IFileService{
+class FileService : IFileService{
     override fun createImageFile(url: String): File {
         val format = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-", Locale.getDefault()).format(Date())
 

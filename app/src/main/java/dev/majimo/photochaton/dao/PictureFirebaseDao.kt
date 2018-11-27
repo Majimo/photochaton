@@ -30,8 +30,9 @@ class PictureFirebaseDao : IPictureFirebaseDao {
         riversRef?.putFile(file)
                 ?.addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
                     // Get a URL to the uploaded content
-                    val downloadUrl = taskSnapshot.downloadUrl
-                    Log.wtf("XXX", downloadUrl.toString());
+                    // val downloadUrl = taskSnapshot.downloadUrl
+                    // Féfé il dit "Bats les steaks de ces lignes là ! "
+                    // Log.wtf("XXX", downloadUrl.toString())
                 })
                 ?.addOnFailureListener(OnFailureListener {
                     Log.wtf("XXX", "Erreur : " + it.message)

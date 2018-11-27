@@ -19,6 +19,7 @@ package dev.majimo.photochaton.view.preview
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
@@ -56,9 +57,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import dev.majimo.photochaton.R
+import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.service.FileService
 import dev.majimo.photochaton.service.IFileService
 import dev.majimo.photochaton.service.PictureService
+import dev.majimo.photochaton.view_model.PictureViewModel
 
 import java.io.File
 import java.io.FileOutputStream
@@ -597,8 +600,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
 
                     // Enregistrement BDD + Firebase
                     var pic = fileService.fileToPicture(file)
-                    val pictureService = PictureService(activity!!)
-                    pictureService.insert(pic)
+                    saveToBDD(pic)
 
                     createCameraPreviewSession()
                 }
@@ -613,8 +615,11 @@ class CameraPreview : Fragment(), View.OnClickListener,
         catch (e: IOException) {
             Log.e("XXX", e.message)
         }
+    }
 
-
+    private fun saveToBDD(pic: Picture) {
+        var vm: PictureViewModel = ViewModelProviders.of(this).get(PictureViewModel::class.java)
+        vm.insert(pic)
     }
 
     private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {

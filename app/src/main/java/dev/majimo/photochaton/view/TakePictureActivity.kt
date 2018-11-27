@@ -6,7 +6,7 @@ import dev.majimo.photochaton.R
 import dev.majimo.photochaton.view.preview.CameraPreview
 
 
-class TakePictureActivity : AppCompatActivity() {
+class TakePictureActivity : MenuActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_take_picture)

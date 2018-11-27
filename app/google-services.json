@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "404095772023",
+    "firebase_url": "https://photochaton-4648f.firebaseio.com",
+    "project_id": "photochaton-4648f",
+    "storage_bucket": "photochaton-4648f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:404095772023:android:10f54734d84c8b2c",
+        "android_client_info": {
+          "package_name": "dev.majimo.photochaton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "404095772023-ebm89f2n1knf3tostoc92gfs0n9psq6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.majimo.photochaton",
+            "certificate_hash": "ce8651f74e123f5f5fe2594d79ba8d71607b79c1"
+          }
+        },
+        {
+          "client_id": "404095772023-11rajk955p0bto1anpegnl9f0376461v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUccUWUR4hfHR4JVM4ej8VAuTuua3nRvk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "404095772023-11rajk955p0bto1anpegnl9f0376461v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

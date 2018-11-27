@@ -1,5 +1,6 @@
 package dev.majimo.photochaton.view
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,8 @@ import android.view.View
 import android.widget.Button
 import com.facebook.stetho.Stetho
 import dev.majimo.photochaton.R
+import dev.majimo.photochaton.model.Picture
+import dev.majimo.photochaton.view_model.PictureViewModel
 
 class MainActivity : MenuActivity() {
     private var button: Button? = null
@@ -23,5 +26,8 @@ class MainActivity : MenuActivity() {
             val intent = Intent(this, TakePictureActivity::class.java)
             startActivity(intent)
         }
+
+        var vm = ViewModelProviders.of(this).get(PictureViewModel::class.java)
+        vm.insert(Picture(1, "url", "name"))
     }
 }

@@ -5,9 +5,9 @@ import android.content.Context
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.repository.IPictureRepository
 import dev.majimo.photochaton.repository.PictureRepository
+import java.io.File
 
 class PictureService(context: Context) : IPictureService {
-
     val repo : IPictureRepository = PictureRepository(context)
 
     override fun insert(picture: Picture) {

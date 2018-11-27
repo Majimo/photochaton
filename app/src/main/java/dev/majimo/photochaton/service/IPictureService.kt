@@ -2,6 +2,7 @@ package dev.majimo.photochaton.service
 
 import android.arch.lifecycle.LiveData
 import dev.majimo.photochaton.model.Picture
+import java.io.File
 
 interface IPictureService {
 

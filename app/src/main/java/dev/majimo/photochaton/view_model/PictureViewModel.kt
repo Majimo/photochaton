@@ -12,15 +12,15 @@ class PictureViewModel(application: Application) : IPictureViewModel, AndroidVie
 
     val service : IPictureService = PictureService(application)
 
-    fun insert(picture : Picture){
+    override fun insert(picture : Picture){
         return service.insert(picture)
     }
 
-    fun get(id : Int) : LiveData<Picture>{
+    override fun get(id : Int) : LiveData<Picture>{
         return service.get(id)
     }
 
-    fun getAll() : LiveData<List<Picture>>{
+    override fun getAll() : LiveData<List<Picture>>{
         return service.getAll()
     }
 }

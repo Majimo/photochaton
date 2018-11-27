@@ -24,7 +24,7 @@ class PictureFirebaseDao : IPictureFirebaseDao {
     }
 
     override fun insert(picture: Picture) {
-        val file = Uri.fromFile(FileService().createImageFile("photochaton/"))
+        val file = Uri.fromFile(FileService().createImageFile("pictures/"))
         val riversRef = mStorageRef?.child(picture.name)
 
         riversRef?.putFile(file)

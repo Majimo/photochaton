@@ -5,7 +5,7 @@ import java.io.File
 
 interface IFileService {
 
-    fun createImageFile(context : Context) : File?
+    fun createImageFile(path: String) : File
 
 
 }

@@ -56,6 +56,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import dev.majimo.photochaton.R
+import dev.majimo.photochaton.service.FileService
+import dev.majimo.photochaton.service.IFileService
 
 import java.io.File
 import java.io.FileOutputStream
@@ -256,7 +258,9 @@ class CameraPreview : Fragment(), View.OnClickListener,
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // FIXME UUID pas unique ?!
-        file = File(activity?.getExternalFilesDir(null), UUID.randomUUID().toString() + ".jpg") // PIC_FILE_NAME)
+        var fileService: IFileService = FileService()
+        file = fileService.createImageFile(activity?.getExternalFilesDir(null).toString())
+        // file = File(activity?.getExternalFilesDir(null), UUID.randomUUID().toString() + ".jpg") // PIC_FILE_NAME)
     }
 
     override fun onResume() {

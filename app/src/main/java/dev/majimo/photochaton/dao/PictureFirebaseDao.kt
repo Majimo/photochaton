@@ -1,6 +1,7 @@
 package dev.majimo.photochaton.dao
 
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import dev.majimo.photochaton.model.Picture
 import com.google.firebase.storage.StorageReference
@@ -9,6 +10,9 @@ import com.google.firebase.storage.UploadTask
 import com.google.android.gms.tasks.OnSuccessListener
 import dev.majimo.photochaton.service.FileService
 import dev.majimo.photochaton.service.IFileService
+import com.google.firebase.storage.FileDownloadTask
+
+
 
 
 class PictureFirebaseDao : IPictureFirebaseDao {
@@ -20,25 +24,17 @@ class PictureFirebaseDao : IPictureFirebaseDao {
     }
 
     override fun insert(picture: Picture) {
-        val file = Uri.fromFile(FileService().createImageFile("Ceci/est/mon/chemin"))
-        val riversRef = mStorageRef?.child("images/rivers.jpg")
+        val file = Uri.fromFile(FileService().createImageFile("photochaton/"))
+        val riversRef = mStorageRef?.child(picture.name)
 
         riversRef?.putFile(file)
                 ?.addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSnapshot ->
                     // Get a URL to the uploaded content
                     val downloadUrl = taskSnapshot.downloadUrl
+                    Log.wtf("XXX", downloadUrl.toString());
                 })
                 ?.addOnFailureListener(OnFailureListener {
-                    // Handle unsuccessful uploads
-                    // ...
+                    Log.wtf("XXX", "Erreur : " + it.message)
                 })
-    }
-
-    override fun get(id: Int): Picture {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getAll(): List<Picture> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

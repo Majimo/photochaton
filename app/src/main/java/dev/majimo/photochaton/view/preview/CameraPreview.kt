@@ -58,6 +58,7 @@ import android.widget.Toast
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.service.FileService
 import dev.majimo.photochaton.service.IFileService
+import dev.majimo.photochaton.service.PictureService
 
 import java.io.File
 import java.io.FileOutputStream
@@ -590,8 +591,14 @@ class CameraPreview : Fragment(), View.OnClickListener,
                 override fun onCaptureCompleted(session: CameraCaptureSession,
                                                 request: CaptureRequest,
                                                 result: TotalCaptureResult) {
+
                     activity?.showToast("Saved: $file")
                     Log.d("XXX", file.toString())
+
+                    // Enregistrement BDD + Firebase
+                    var pic = fileService.fileToPicture(file)
+                    val pictureService = PictureService(activity!!)
+                    pictureService.insert(pic)
 
                     createCameraPreviewSession()
                 }
@@ -606,6 +613,8 @@ class CameraPreview : Fragment(), View.OnClickListener,
         catch (e: IOException) {
             Log.e("XXX", e.message)
         }
+
+
     }
 
     private fun setAutoFlash(requestBuilder: CaptureRequest.Builder) {

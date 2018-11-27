@@ -14,56 +14,26 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FileService : IFileService{
+class FileService(name : String) : IFileService{
+    override fun createImageFile(url: String): File {
 
-    var localImageFilePath = ""
-    private var mStorageRef: StorageReference? = null
-    internal var riversRef: StorageReference? = null
+        val format
+
+        var f = File(url)
+    }
 
     init {
-        mStorageRef = FirebaseStorage.getInstance().reference
+
     }
 
+    override fun getImage(url : String) {
 
-    override fun createImageFile(context : Context): File? {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss",
-                Locale.getDefault()).format(Date())
-        val imageFileName = "IMG_" + timeStamp + "_"
-        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        var image: File? = null
-        try {
-            image = File.createTempFile(
-                    imageFileName, /* prefix */
-                    ".jpg", /* suffix */
-                    storageDir      /* directory */
-            )
-            localImageFilePath = image!!.absolutePath
-            return image
-        } catch (e: IOException) {
-            e.printStackTrace()
+    }
+
+    companion object {
+        fun createImage(url : String) : File{
+            return File("")
         }
-
-        return null
-
-    }
-
-    fun uploadImage(view: View) {
-        val file = Uri.fromFile(File(localImageFilePath))
-        riversRef = mStorageRef?.child("images/rivers.jpg")
-
-        riversRef?.putFile(file)
-                ?.addOnSuccessListener(object : OnSuccessListener<UploadTask.TaskSnapshot> {
-                    override fun onSuccess(taskSnapshot: UploadTask.TaskSnapshot) {
-                        // Get a URL to the uploaded content
-                        val downloadUrl = taskSnapshot.getDownloadUrl()
-                    }
-                })
-                ?.addOnFailureListener(object : OnFailureListener {
-                    override fun onFailure(exception: Exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                })
     }
 
 }

@@ -2,16 +2,13 @@ package dev.majimo.photochaton.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.view.adapter.PictureAdapter
 import dev.majimo.photochaton.view_model.PictureViewModel
-import javax.annotation.Nullable
 
 class ListPicturesActivity : MenuActivity() {
 
@@ -25,11 +22,11 @@ class ListPicturesActivity : MenuActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         val adapter = PictureAdapter(this)
+        rv.adapter = adapter
 
         val vm = ViewModelProviders.of(this).get(PictureViewModel::class.java)
 
         vm.getAll().observe(this, Observer<List<Picture>> {
-            Log.wtf("XXX", it?.get(0).toString())
             adapter.setPictures(it)
             adapter.notifyDataSetChanged()
         })

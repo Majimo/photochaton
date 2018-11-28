@@ -3,12 +3,14 @@ package dev.majimo.photochaton.view.adapter
 import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.View
 import android.widget.ImageView
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
+import dev.majimo.photochaton.view.TakePictureActivity
 import java.util.ArrayList
 
 class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
@@ -34,7 +36,13 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
-        return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_photo, parent, false), context)
+        if (context is TakePictureActivity) {
+            Log.wtf("XXX", "TakePictureActivity")
+        }
+        else {
+            Log.wtf("XXX", "ListPicturesActivity")
+        }
+        return PictureViewHolder(LayoutInflater.from(context).inflate(R.layout.line_photo, parent, false))
     }
 
     override fun getItemCount(): Int {

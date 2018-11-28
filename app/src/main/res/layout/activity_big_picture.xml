@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.BigPictureActivity">
+
+    <data>
+        <variable
+            name="photoClic"
+            type="dev.majimo.photochaton.model.Picture"
+            />
+    </data>
+
+    <TextView
+        android:id="@+id/tv_popup_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="This is a PopupWindow" />
+
+    <ImageView
+        android:id="@+id/iv_popup_picture"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_popup_title"
+        android:padding="20dp"
+        android:src="@drawable/pellicule_bis" />
+
+    <Button
+        android:id="@+id/bnt_popup_dismiss"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/iv_popup_picture"
+        android:text="Dismiss" />
+
+</android.support.constraint.ConstraintLayout>

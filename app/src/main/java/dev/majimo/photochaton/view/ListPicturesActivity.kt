@@ -10,7 +10,7 @@ import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.view.adapter.PictureAdapter
 import dev.majimo.photochaton.view_model.PictureViewModel
 
-class ListPicturesActivity : MenuActivity() {
+class ListPicturesActivity : MenuActivity(), PictureAdapter.IClickable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,5 +30,9 @@ class ListPicturesActivity : MenuActivity() {
             adapter.setPictures(it)
             adapter.notifyDataSetChanged()
         })
+    }
+
+    override fun action(picture: Picture) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

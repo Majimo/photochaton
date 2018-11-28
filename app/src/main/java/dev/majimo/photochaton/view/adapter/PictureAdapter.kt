@@ -48,12 +48,12 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
         if (context is TakePictureActivity) {
-            Log.wtf("XXX", "TakePictureActivity")
+            return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_photo, parent, false), context)
         }
         else {
-            Log.wtf("XXX", "ListPicturesActivity")
+            return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_grid_photo, parent, false), context)
         }
-        return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_photo, parent, false), context)
+
     }
 
     override fun getItemCount(): Int {

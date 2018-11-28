@@ -3,6 +3,7 @@ package dev.majimo.photochaton.view
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import dev.majimo.photochaton.R
@@ -19,7 +20,10 @@ class ListPicturesActivity : MenuActivity(), PictureAdapter.IClickable {
         val rv = findViewById<RecyclerView>(R.id.rv_list_picture)
 
         rv.setHasFixedSize(true)
-        rv.layoutManager = LinearLayoutManager(this)
+
+        val layout = GridLayoutManager(this, 4)
+
+        rv.layoutManager = layout
 
         val adapter = PictureAdapter(this)
         rv.adapter = adapter

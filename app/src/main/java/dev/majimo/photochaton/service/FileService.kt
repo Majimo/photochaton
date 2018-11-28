@@ -8,7 +8,7 @@ import java.util.*
 
 class FileService : IFileService{
     override fun createImageFile(url: String): File {
-        val format = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-", Locale.getDefault()).format(Date())
+        val format = SimpleDateFormat("dd-MM-yyyy_HH-mm-ss", Locale.getDefault()).format(Date())
 
         return File(url + "/" + format + ".jpg")
     }

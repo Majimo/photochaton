@@ -16,7 +16,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
         <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +30,11 @@
             android:screenOrientation="landscape" />
         <activity android:name=".view.ListPicturesActivity" />
         <activity android:name=".view.PictureActivity" />
+<<<<<<< HEAD
         <activity android:name=".view.JokeActivity" />
+=======
+        <activity android:name=".view.BigPictureActivity"></activity>
+>>>>>>> master
     </application>
 
 </manifest>

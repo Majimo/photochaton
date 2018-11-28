@@ -12,7 +12,7 @@ import dev.majimo.photochaton.view.preview.CameraPreview
 import dev.majimo.photochaton.view_model.PictureViewModel
 
 
-class TakePictureActivity : MenuActivity() {
+class TakePictureActivity : MenuActivity(), PictureAdapter.IClickable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_take_picture)
@@ -37,5 +37,9 @@ class TakePictureActivity : MenuActivity() {
             adapter.setPictures(it)
             adapter.notifyDataSetChanged()
         })
+    }
+
+    override fun action(picture: Picture) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

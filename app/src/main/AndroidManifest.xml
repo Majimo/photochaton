@@ -28,6 +28,7 @@
             android:screenOrientation="landscape" />
         <activity android:name=".view.ListPicturesActivity" />
         <activity android:name=".view.PictureActivity" />
+        <activity android:name=".view.BigPictureActivity"></activity>
     </application>
 
 </manifest>

@@ -37,9 +37,6 @@ class MainActivity : MenuActivity() {
             val intent = Intent(this, TakePictureActivity::class.java)
             startActivity(intent)
         }
-
-        var vm = ViewModelProviders.of(this).get(PictureViewModel::class.java)
-        vm.insert(Picture(1, "url", "name"))
     }
 
     override fun onResume() {

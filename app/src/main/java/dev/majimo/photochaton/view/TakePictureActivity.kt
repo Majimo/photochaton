@@ -2,6 +2,7 @@ package dev.majimo.photochaton.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -40,6 +41,8 @@ class TakePictureActivity : MenuActivity(), PictureAdapter.IClickable {
     }
 
     override fun action(picture: Picture) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, BigPictureActivity::class.java)
+        intent.putExtra("urlPic", picture.url)
+        startActivity(intent)
     }
 }

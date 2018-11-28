@@ -50,10 +50,10 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
         if (context is TakePictureActivity) {
-            return PictureViewHolder(LayoutInflater.from(context).inflate(R.layout.line_photo, parent, false))
+            return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_photo, parent, false), context)
         }
         else {
-            return PictureViewHolder(LayoutInflater.from(context).inflate(R.layout.line_grid_photo, parent, false))
+            return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_grid_photo, parent, false), context)
         }
 
     }

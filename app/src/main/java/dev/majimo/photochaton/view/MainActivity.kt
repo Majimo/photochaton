@@ -1,5 +1,6 @@
 package dev.majimo.photochaton.view
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import dev.majimo.photochaton.model.Picture
+import dev.majimo.photochaton.view_model.PictureViewModel
 
 class MainActivity : MenuActivity() {
     private var button: Button? = null
@@ -34,6 +37,9 @@ class MainActivity : MenuActivity() {
             val intent = Intent(this, TakePictureActivity::class.java)
             startActivity(intent)
         }
+
+        var vm = ViewModelProviders.of(this).get(PictureViewModel::class.java)
+        vm.insert(Picture(1, "url", "name"))
     }
 
     override fun onResume() {

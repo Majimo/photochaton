@@ -13,7 +13,7 @@ class PictureService(private val context: Context) : IPictureService {
     val repo : IPictureRepository = PictureRepository(context)
 
     override fun insert(picture: Picture) {
-        insertAsync(repo, context).execute(picture)
+        insertAsync(repo).execute(picture)
     }
 
     override fun get(id: Int): LiveData<Picture> {
@@ -24,12 +24,12 @@ class PictureService(private val context: Context) : IPictureService {
         return repo.getAll()
     }
 
-    private class insertAsync(private val repository: IPictureRepository, private val context: Context) : AsyncTask<Picture, Void?, Void?>() {
+    private class insertAsync(private val repository: IPictureRepository) : AsyncTask<Picture, Void?, Void?>() {
 
         override fun doInBackground(vararg params: Picture?): Void? {
             repository.insert(params[0]!!)
 
-            var fbDao = PictureFirebaseDao(context)
+            var fbDao = PictureFirebaseDao()
             fbDao.insert(params[0]!!)
 
             return null

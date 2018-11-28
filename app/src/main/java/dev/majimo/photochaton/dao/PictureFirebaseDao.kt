@@ -14,7 +14,7 @@ import java.io.File
 import java.net.URI
 
 
-class PictureFirebaseDao(private val context: Context) : IPictureFirebaseDao {
+class PictureFirebaseDao() : IPictureFirebaseDao {
 
     private var mStorageRef: StorageReference? = null
 

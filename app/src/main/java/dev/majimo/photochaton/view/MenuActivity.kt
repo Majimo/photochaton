@@ -14,9 +14,13 @@ open class MenuActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.menu_pics_list -> {
-                val intent = Intent(this, ListPicturesActivity::class.java)
+            R.id.menu_take_picture -> {
+                val intent = Intent(this, TakePictureActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.menu_pics_list -> {
+                val intent1 = Intent(this, ListPicturesActivity::class.java)
+                startActivity(intent1)
             }
         }
         return super.onOptionsItemSelected(item)

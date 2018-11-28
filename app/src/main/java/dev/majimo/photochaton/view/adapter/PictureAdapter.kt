@@ -43,8 +43,6 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
 
         holder?.iv_picture.setImageBitmap(bit)
 
-        // holder?.iv_picture.setImageURI(Uri.parse(items.get(position).url))
-
         holder?.picture = items.get(position)
     }
 
@@ -72,30 +70,6 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
 
         override fun onClick(v: View?) {
             context.action(picture)
-
-            /*
-
-            // Voir comment envoyer du binding dans une activité
-
-            val layoutInflater = context
-                    .getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val popupView = layoutInflater.inflate(R.layout.popup_picture, null)
-            val popupWindow = PopupWindow(
-                    popupView,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
-
-            val picBinding = DataBindingUtil.setContentView<ViewDataBinding>(TakePictureActivity(), R.layout.popup_picture)
-            val picClicked = Picture(0, "/storage/emulated/0/Android/data/dev.majimo.photochaton/files/27-11-2018_17-40-45-.jpg", "27-11-2018_17-40-45-.jpg")
-            picBinding.data =
-
-            val btnDismiss = popupView.findViewById<Button>(R.id.bnt_popup_dismiss)
-            btnDismiss.setOnClickListener(View.OnClickListener {
-                popupWindow.dismiss()
-            })
-
-            popupWindow.showAsDropDown(v, 20, 20)
-            */
         }
     }
 }

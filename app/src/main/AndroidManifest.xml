@@ -30,11 +30,10 @@
             android:screenOrientation="landscape" />
         <activity android:name=".view.ListPicturesActivity" />
         <activity android:name=".view.PictureActivity" />
-<<<<<<< HEAD
+
         <activity android:name=".view.JokeActivity" />
-=======
         <activity android:name=".view.BigPictureActivity"></activity>
->>>>>>> master
+
     </application>
 
 </manifest>

@@ -37,7 +37,7 @@ dependencies {
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
 
     // LiveData
     def lifecycle_version = "1.1.1"
@@ -73,7 +73,6 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$room_version"
     // optional - Guava support for Room, including Optional and ListenableFuture
     implementation "android.arch.persistence.room:guava:$room_version"
-    // Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
 
     // FIREBASE

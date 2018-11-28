@@ -1,6 +1,5 @@
 package dev.majimo.photochaton.view.adapter
 
-import android.content.Context
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -42,7 +41,7 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
         else {
             Log.wtf("XXX", "ListPicturesActivity")
         }
-        return PictureViewHolder(LayoutInflater.from(context).inflate(R.layout.line_photo, parent, false))
+        return PictureViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.line_photo, parent, false), context)
     }
 
     override fun getItemCount(): Int {

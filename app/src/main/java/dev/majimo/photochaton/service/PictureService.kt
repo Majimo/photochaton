@@ -3,12 +3,13 @@ package dev.majimo.photochaton.service
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.os.AsyncTask
+import dev.majimo.photochaton.dao.PictureFirebaseDao
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.repository.IPictureRepository
 import dev.majimo.photochaton.repository.PictureRepository
 import java.io.File
 
-class PictureService(context: Context) : IPictureService {
+class PictureService(private val context: Context) : IPictureService {
     val repo : IPictureRepository = PictureRepository(context)
 
     override fun insert(picture: Picture) {
@@ -27,6 +28,10 @@ class PictureService(context: Context) : IPictureService {
 
         override fun doInBackground(vararg params: Picture?): Void? {
             repository.insert(params[0]!!)
+
+            var fbDao = PictureFirebaseDao()
+            fbDao.insert(params[0]!!)
+
             return null
         }
     }

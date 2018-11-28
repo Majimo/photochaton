@@ -29,7 +29,17 @@
             android:screenOrientation="landscape" />
         <activity android:name=".view.ListPicturesActivity" />
         <activity android:name=".view.PictureActivity" />
-        <activity android:name=".view.BigPictureActivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="dev.majimo.photochaton.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

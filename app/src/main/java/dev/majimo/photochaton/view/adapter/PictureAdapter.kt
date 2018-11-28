@@ -11,6 +11,11 @@ import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.view.TakePictureActivity
 import java.util.ArrayList
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import java.io.File
+import java.io.FileInputStream
+
 
 class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
 
@@ -30,7 +35,16 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
     }
 
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
-        holder?.iv_picture.setImageURI(Uri.parse(items.get(position).url))
+        val options = BitmapFactory.Options()
+        options.inPreferredConfig = Bitmap.Config.RGB_565
+        options.inSampleSize = 8
+
+        val bit = BitmapFactory.decodeStream(FileInputStream(File(items.get(position).url)), null, options)
+
+        holder?.iv_picture.setImageBitmap(bit)
+
+        // holder?.iv_picture.setImageURI(Uri.parse(items.get(position).url))
+
         holder?.picture = items.get(position)
     }
 

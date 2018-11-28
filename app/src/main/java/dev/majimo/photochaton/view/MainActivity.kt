@@ -2,6 +2,7 @@ package dev.majimo.photochaton.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import com.facebook.stetho.Stetho
 import dev.majimo.photochaton.R

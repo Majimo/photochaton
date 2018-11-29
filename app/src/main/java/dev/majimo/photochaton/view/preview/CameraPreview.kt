@@ -17,6 +17,7 @@
 package dev.majimo.photochaton.view.preview
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
@@ -40,9 +41,7 @@ import android.hardware.camera2.CaptureResult
 import android.hardware.camera2.TotalCaptureResult
 import android.media.Image
 import android.media.ImageReader
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
+import android.os.*
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
@@ -55,6 +54,7 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
@@ -66,6 +66,7 @@ import dev.majimo.photochaton.view_model.PictureViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
@@ -483,7 +484,6 @@ class CameraPreview : Fragment(), View.OnClickListener,
      * Creates a new [CameraCaptureSession] for camera preview.
      */
     private fun createCameraPreviewSession() {
-
         try {
             val texture = textureView.surfaceTexture
 
@@ -572,17 +572,45 @@ class CameraPreview : Fragment(), View.OnClickListener,
     override fun onClick(view: View) {
 
         when (view.id) {
-            R.id.btn_take_picture -> takePicture()
+            R.id.btn_take_picture -> {
+
+                val launchTimer = LaunchTimer()
+                launchTimer.execute("On lance le timer !")
+            }
+        }
+    }
+
+    inner class LaunchTimer: AsyncTask<String, Int, String>() {
+        var tvTimer : TextView = activity!!.findViewById(R.id.tv_timer)
+
+        override fun doInBackground(vararg params: String?): String {
+            for (i in 6 downTo 1) {
+                Thread.sleep(1000)
+                publishProgress(i - 1)
+            }
+            return "Souris grawh t'es pris en toph' !"
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+            tvTimer.setText(values[0].toString())
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            tvTimer.setText("")
+
+            takePicture()
         }
     }
 
     fun takePicture() {
+        Log.wtf("XXX", "On prend enfin la photo en décalay !")
         // Création d'un nouveau fichier pour la prochaine photo
         file = fileService.createImageFile(activity?.getExternalFilesDir(null).toString())
 
         try {
             if (activity == null || cameraDevice == null) return
-            val rotation = activity?.windowManager?.defaultDisplay?.rotation
 
             val captureBuilder = cameraDevice?.createCaptureRequest(
                     CameraDevice.TEMPLATE_STILL_CAPTURE)?.apply {

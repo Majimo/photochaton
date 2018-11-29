@@ -27,9 +27,58 @@ class PictureFirebaseDao() : IPictureFirebaseDao {
         val riversRef = mStorageRef?.child("pictures/" + picture.name)
 
         riversRef!!.putFile(file).addOnSuccessListener(OnSuccessListener { tResult ->
-            Log.wtf("XXX", "Firebase OK")
+
+            var list = getPicsToUpload();
+            if (list.size > 0){
+                var nb = uploadPics(list)
+
+                if (nb != list.size){
+                    clearUntil(nb)
+                }
+            }
+
         }).addOnFailureListener(OnFailureListener { exception ->
-            Log.wtf("XXX", "Firebase OKN'T")
+            addPicToUpload(picture)
         })
+    }
+
+    fun uploadPics(list : List<Picture>): Int{
+        for ((index, pic) in list.withIndex()){
+            val file = Uri.fromFile(File(pic.url))
+            val riversRef = mStorageRef?.child("pictures/" + pic.name)
+            var go = true;
+
+            riversRef!!.putFile(file).addOnSuccessListener(OnSuccessListener { tResult ->
+            }).addOnFailureListener(OnFailureListener { exception ->
+                go = false;
+            })
+
+            if (!go){
+                return index;
+            }
+        }
+
+        clearPics()
+
+        return list.size
+    }
+
+    companion object {
+        private var toUpload: MutableList<Picture> = ArrayList()
+
+        fun addPicToUpload(picture: Picture){
+            toUpload.add(picture)
+        }
+        fun getPicsToUpload() : List<Picture>{
+            return toUpload
+        }
+        fun clearPics(){
+            toUpload.clear()
+        }
+        fun clearUntil(index : Int){
+            for (i in 0..index) {
+                toUpload.removeAt(i)
+            }
+        }
     }
 }

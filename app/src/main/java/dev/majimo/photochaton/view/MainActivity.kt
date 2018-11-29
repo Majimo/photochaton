@@ -14,9 +14,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.view_model.PictureViewModel
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : MenuActivity() {
     private var button: Button? = null

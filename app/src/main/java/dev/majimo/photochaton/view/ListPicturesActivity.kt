@@ -10,6 +10,7 @@ import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.view.adapter.PictureAdapter
 import dev.majimo.photochaton.view_model.PictureViewModel
+import java.io.File
 
 class ListPicturesActivity : MenuActivity(), PictureAdapter.IClickable {
 

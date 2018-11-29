@@ -37,7 +37,7 @@ class PictureAdapter (val context: IClickable) : RecyclerView.Adapter<PictureAda
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
         val options = BitmapFactory.Options()
         options.inPreferredConfig = Bitmap.Config.RGB_565
-        options.inSampleSize = 8
+        options.inSampleSize = 5
 
         val bit = BitmapFactory.decodeStream(FileInputStream(File(items.get(position).url)), null, options)
 

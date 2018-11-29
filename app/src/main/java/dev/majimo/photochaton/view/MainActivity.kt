@@ -47,8 +47,6 @@ class MainActivity : MenuActivity() {
     private fun getJoke() {
         val url = "https://api.adviceslip.com/"
 
-        Log.wtf("XXX", "Es ce que tu passe dedans ?")
-
         val retrofit = Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(MoshiConverterFactory.create())

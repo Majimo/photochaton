@@ -68,6 +68,7 @@ class PictureFirebaseDao() : IPictureFirebaseDao {
 
         fun addPicToUpload(picture: Picture){
             toUpload.add(picture)
+            Log.wtf("XXX", "Il y a " + toUpload.size + " photos à upload")
         }
         fun getPicsToUpload() : List<Picture>{
             return toUpload
@@ -79,6 +80,7 @@ class PictureFirebaseDao() : IPictureFirebaseDao {
             for (i in 0..index) {
                 toUpload.removeAt(i)
             }
+            Log.wtf("XXX", "Suite à une deconnexion à Firebase, il reste encore " + toUpload.size + " photos à upload")
         }
     }
 }

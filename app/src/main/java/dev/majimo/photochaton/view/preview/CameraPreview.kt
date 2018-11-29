@@ -41,10 +41,7 @@ import android.hardware.camera2.CaptureResult
 import android.hardware.camera2.TotalCaptureResult
 import android.media.Image
 import android.media.ImageReader
-import android.os.AsyncTask
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
+import android.os.*
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
@@ -487,7 +484,6 @@ class CameraPreview : Fragment(), View.OnClickListener,
      * Creates a new [CameraCaptureSession] for camera preview.
      */
     private fun createCameraPreviewSession() {
-
         try {
             val texture = textureView.surfaceTexture
 
@@ -578,58 +574,43 @@ class CameraPreview : Fragment(), View.OnClickListener,
         when (view.id) {
             R.id.btn_take_picture -> {
 
-
-                //var tvTimer = this.view?.findViewById<TextView>(R.id.tv_timer)
-                //val async = TimerAsync()
-
-                for (index in 5 downTo 1){
-                    //Thread.sleep(1000)
-                    //async.execute(index)
-
-                    mHandler.postDelayed(MyRunnable(this.activity!!, index), 1000)
-                }
-
-                takePicture()
+                val launchTimer = LaunchTimer()
+                launchTimer.execute("On lance le timer !")
             }
         }
     }
 
-    private class MyHandler : Handler()
-    private val mHandler: MyHandler = MyHandler()
+    inner class LaunchTimer: AsyncTask<String, Int, String>() {
+        var tvTimer : TextView = activity!!.findViewById(R.id.tv_timer)
 
-    public class MyRunnable(activity : Activity, val index : Int) : Runnable{
-        val mActivity : WeakReference<Activity> = WeakReference<Activity>(activity)
-
-        override fun run() {
-            var activity : Activity? = mActivity.get()
-            if (activity != null){
-                val tvTimer : TextView = activity.findViewById(R.id.tv_timer)
-                tvTimer.setText(index.toString())
+        override fun doInBackground(vararg params: String?): String {
+            for (i in 6 downTo 1) {
+                Thread.sleep(1000)
+                publishProgress(i - 1)
             }
-        }
-    }
-
-    //private val mRunnable : MyRunnable = MyRunnable(this.activity!!, 1)
-
-
-    class TimerAsync : AsyncTask<Int, Int, Int>() {
-        override fun doInBackground(vararg p0: Int?): Int {
-            Thread.sleep(1000)
-            return null!!
+            return "Souris grawh t'es pris en toph' !"
         }
 
         override fun onProgressUpdate(vararg values: Int?) {
-            super.onProgressUpdate(values[0])
+            super.onProgressUpdate(*values)
+            tvTimer.setText(values[0].toString())
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            tvTimer.setText("")
+
+            takePicture()
         }
     }
 
     fun takePicture() {
+        Log.wtf("XXX", "On prend enfin la photo en décalay !")
         // Création d'un nouveau fichier pour la prochaine photo
         file = fileService.createImageFile(activity?.getExternalFilesDir(null).toString())
 
         try {
             if (activity == null || cameraDevice == null) return
-            val rotation = activity?.windowManager?.defaultDisplay?.rotation
 
             val captureBuilder = cameraDevice?.createCaptureRequest(
                     CameraDevice.TEMPLATE_STILL_CAPTURE)?.apply {

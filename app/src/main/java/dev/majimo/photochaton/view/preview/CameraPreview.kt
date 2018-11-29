@@ -17,6 +17,7 @@
 package dev.majimo.photochaton.view.preview
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
@@ -40,6 +41,7 @@ import android.hardware.camera2.CaptureResult
 import android.hardware.camera2.TotalCaptureResult
 import android.media.Image
 import android.media.ImageReader
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -55,6 +57,7 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
@@ -66,6 +69,7 @@ import dev.majimo.photochaton.view_model.PictureViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
@@ -572,7 +576,50 @@ class CameraPreview : Fragment(), View.OnClickListener,
     override fun onClick(view: View) {
 
         when (view.id) {
-            R.id.btn_take_picture -> takePicture()
+            R.id.btn_take_picture -> {
+
+
+                //var tvTimer = this.view?.findViewById<TextView>(R.id.tv_timer)
+                //val async = TimerAsync()
+
+                for (index in 5 downTo 1){
+                    //Thread.sleep(1000)
+                    //async.execute(index)
+
+                    mHandler.postDelayed(MyRunnable(this.activity!!, index), 1000)
+                }
+
+                takePicture()
+            }
+        }
+    }
+
+    private class MyHandler : Handler()
+    private val mHandler: MyHandler = MyHandler()
+
+    public class MyRunnable(activity : Activity, val index : Int) : Runnable{
+        val mActivity : WeakReference<Activity> = WeakReference<Activity>(activity)
+
+        override fun run() {
+            var activity : Activity? = mActivity.get()
+            if (activity != null){
+                val tvTimer : TextView = activity.findViewById(R.id.tv_timer)
+                tvTimer.setText(index.toString())
+            }
+        }
+    }
+
+    //private val mRunnable : MyRunnable = MyRunnable(this.activity!!, 1)
+
+
+    class TimerAsync : AsyncTask<Int, Int, Int>() {
+        override fun doInBackground(vararg p0: Int?): Int {
+            Thread.sleep(1000)
+            return null!!
+        }
+
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(values[0])
         }
     }
 

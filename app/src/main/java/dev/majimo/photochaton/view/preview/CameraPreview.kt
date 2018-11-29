@@ -56,6 +56,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.ToggleButton
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.service.FileService
@@ -256,6 +257,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.btn_take_picture).setOnClickListener(this)
+        view.findViewById<View>(R.id.btn_set_effect).setOnClickListener(this)
         textureView = view.findViewById(R.id.texture)
     }
 
@@ -576,21 +578,31 @@ class CameraPreview : Fragment(), View.OnClickListener,
 
     var photoOptions: Boolean = false
 
-    fun setPicOptions() {
+    fun setPicOptions(option: Boolean) {
         Log.wtf("XXX", "0" + photoOptions.toString())
-        photoOptions = true
+        photoOptions = !photoOptions
         Log.wtf("XXX", "1" + photoOptions.toString())
+        var btnPhotoOptions : ToggleButton = view!!.findViewById(R.id.btn_set_effect)
+        if (photoOptions) {
+            btnPhotoOptions.textOn
+        }
+        else {
+            btnPhotoOptions.textOff
+        }
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.btn_take_picture -> {
-                Log.wtf("XXX", "Tu fous ma gueule !")
+                Log.wtf("XXX", "Bouton appareil photo")
                 val launchTimer = LaunchTimer()
                 launchTimer.execute("On lance le timer !")
             }
-            // FIXME Clic non détecté... Au boulot Félix !
-            R.id.btn_pic_option -> Log.wtf("XXX", "C'est de la merde !!!!")
+            // FIXME Clic non détecté...
+            R.id.btn_set_effect -> {
+                Log.wtf("XXX", "Bouton options filtre")
+                setPicOptions(photoOptions)
+            }
         }
     }
 

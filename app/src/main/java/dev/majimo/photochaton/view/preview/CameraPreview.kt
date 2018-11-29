@@ -513,6 +513,11 @@ class CameraPreview : Fragment(), View.OnClickListener,
                                 // Auto focus should be continuous for camera preview.
                                 previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+                                /*
+                                // Preview Filtre
+                                previewRequestBuilder.set(CaptureRequest.CONTROL_EFFECT_MODE,
+                                        CaptureRequest.CONTROL_EFFECT_MODE_SEPIA)
+                                 */
                                 // Flash is automatically enabled when necessary.
                                 setAutoFlash(previewRequestBuilder)
 
@@ -569,14 +574,23 @@ class CameraPreview : Fragment(), View.OnClickListener,
         textureView.setTransform(matrix)
     }
 
-    override fun onClick(view: View) {
+    var photoOptions: Boolean = false
 
+    fun setPicOptions() {
+        Log.wtf("XXX", "0" + photoOptions.toString())
+        photoOptions = true
+        Log.wtf("XXX", "1" + photoOptions.toString())
+    }
+
+    override fun onClick(view: View) {
         when (view.id) {
             R.id.btn_take_picture -> {
-
+                Log.wtf("XXX", "Tu fous ma gueule !")
                 val launchTimer = LaunchTimer()
                 launchTimer.execute("On lance le timer !")
             }
+            // FIXME Clic non détecté... Au boulot Félix !
+            R.id.btn_pic_option -> Log.wtf("XXX", "C'est de la merde !!!!")
         }
     }
 
@@ -597,7 +611,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
                 tvTimer.setText(values[0].toString())
             }
             else {
-                tvTimer.setText("Souriez !")
+                tvTimer.setText("Souriez")
             }
         }
 
@@ -619,6 +633,10 @@ class CameraPreview : Fragment(), View.OnClickListener,
             val captureBuilder = cameraDevice?.createCaptureRequest(
                     CameraDevice.TEMPLATE_STILL_CAPTURE)?.apply {
                 addTarget(imageReader?.surface)
+
+                if (photoOptions) {
+                    this.set(CaptureRequest.CONTROL_EFFECT_MODE, CaptureRequest.CONTROL_EFFECT_MODE_SEPIA)
+                }
             }?.also { setAutoFlash(it) }
 
             val captureCallback = object : CameraCaptureSession.CaptureCallback() {
@@ -626,6 +644,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
                 override fun onCaptureCompleted(session: CameraCaptureSession,
                                                 request: CaptureRequest,
                                                 result: TotalCaptureResult) {
+                    // request[CaptureRequest.CONTROL_EFFECT_MODE]
 
                     activity?.showToast("Saved: $file")
                     Log.d("XXX", file.toString())

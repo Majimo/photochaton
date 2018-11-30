@@ -36,7 +36,7 @@
         android:id="@+id/tv_joke"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Photo Chaton, une application qu'elle est bien pour l'utiliser !"
+        android:text="Si tu étais connecté à Internet, ta vie aurait été changée !"
         android:textSize="25dp"
         android:gravity="center"
         android:textColor="@color/colorPrimary"

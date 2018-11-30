@@ -255,10 +255,12 @@ class CameraPreview : Fragment(), View.OnClickListener,
                               savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_camera_preview, container, false)
 
+    lateinit var popupMenu: PopupMenu
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.btn_take_picture).setOnClickListener(this)
         view.findViewById<View>(R.id.btn_set_effect).setOnClickListener(this)
-        view.findViewById<View>(R.id.btn_test_popupmenu).setOnClickListener(this)
+        view.findViewById<View>(R.id.btn_popupmenu).setOnClickListener(this)
         textureView = view.findViewById(R.id.texture)
     }
 
@@ -600,6 +602,7 @@ class CameraPreview : Fragment(), View.OnClickListener,
     }
 
     override fun onClick(view: View) {
+        popupMenu = PopupMenu(this.activity, view.findViewById<Button>(R.id.btn_popupmenu))
         when (view.id) {
             R.id.btn_take_picture -> {
                 val launchTimer = LaunchTimer()
@@ -608,12 +611,11 @@ class CameraPreview : Fragment(), View.OnClickListener,
             R.id.btn_set_effect -> {
                 // setPicOptions(photoOptions)
             }
-            R.id.btn_test_popupmenu -> {
-                var btnPopup = view.findViewById<Button>(R.id.btn_test_popupmenu)
-                var popupMenu: PopupMenu = PopupMenu(activity, btnPopup)
+            R.id.btn_popupmenu -> {
                 popupMenu.inflate(R.menu.options_pics_menu)
                 popupMenu.setOnMenuItemClickListener {
                     setPicOptions(it.toString()[0].toString().toInt())
+                    onOptionsItemSelected(it.setChecked(true))
                     true
                 }
                 popupMenu.show()

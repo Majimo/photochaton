@@ -19,6 +19,7 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
         <activity android:name=".view.MainActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,9 +31,9 @@
             android:name=".view.TakePictureActivity"
             android:screenOrientation="landscape"
             android:launchMode="singleTask" />
-        <activity android:name=".view.ListPicturesActivity" />
-        <activity android:name=".view.PictureActivity" />
-        <activity android:name=".view.BigPictureActivity"></activity>
+        <activity android:name=".view.ListPicturesActivity" android:screenOrientation="landscape" />
+        <activity android:name=".view.PictureActivity" android:screenOrientation="landscape" />
+        <activity android:name=".view.BigPictureActivity" android:screenOrientation="landscape" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

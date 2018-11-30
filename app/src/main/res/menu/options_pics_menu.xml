@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/options_pic_sepia"
+            android:title="1 - Sepia" />
+        <item android:id="@+id/options_pic_mono"
+            android:title="2 - Noir et Blanc" />
+        <item android:id="@+id/options_pic_solarize"
+            android:title="3 - Aqua" />
+        <item android:id="@+id/options_pic_normal"
+            android:title="4 - Pas d'effets" />
+    </group>
+</menu>

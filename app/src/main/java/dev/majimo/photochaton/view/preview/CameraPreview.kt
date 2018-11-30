@@ -47,6 +47,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.util.Range
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.LayoutInflater
@@ -54,8 +55,7 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import dev.majimo.photochaton.R
 import dev.majimo.photochaton.model.Picture
 import dev.majimo.photochaton.service.FileService
@@ -70,6 +70,7 @@ import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class CameraPreview : Fragment(), View.OnClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -254,8 +255,12 @@ class CameraPreview : Fragment(), View.OnClickListener,
                               savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_camera_preview, container, false)
 
+    lateinit var popupMenu: PopupMenu
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.btn_take_picture).setOnClickListener(this)
+        view.findViewById<View>(R.id.btn_set_effect).setOnClickListener(this)
+        view.findViewById<View>(R.id.btn_popupmenu).setOnClickListener(this)
         textureView = view.findViewById(R.id.texture)
     }
 
@@ -513,11 +518,12 @@ class CameraPreview : Fragment(), View.OnClickListener,
                                 // Auto focus should be continuous for camera preview.
                                 previewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
-                                /*
+
                                 // Preview Filtre
-                                previewRequestBuilder.set(CaptureRequest.CONTROL_EFFECT_MODE,
-                                        CaptureRequest.CONTROL_EFFECT_MODE_SEPIA)
-                                 */
+                                // TODO Remettre le filtre là si ça marche pas CONTROL_EFFECT_MODE
+                                previewRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, true)
+                                previewRequestBuilder.set(CaptureRequest.CONTROL_EFFECT_MODE, filterSelected)
+
                                 // Flash is automatically enabled when necessary.
                                 setAutoFlash(previewRequestBuilder)
 
@@ -574,23 +580,46 @@ class CameraPreview : Fragment(), View.OnClickListener,
         textureView.setTransform(matrix)
     }
 
-    var photoOptions: Boolean = false
+    var filterSelected: Int = CaptureRequest.CONTROL_EFFECT_MODE_OFF
 
-    fun setPicOptions() {
-        Log.wtf("XXX", "0" + photoOptions.toString())
-        photoOptions = true
-        Log.wtf("XXX", "1" + photoOptions.toString())
+    var photoFilterSelection = mutableListOf(
+            CaptureRequest.CONTROL_EFFECT_MODE_SEPIA,
+            CaptureRequest.CONTROL_EFFECT_MODE_MONO,
+            CaptureRequest.CONTROL_EFFECT_MODE_AQUA,
+            CaptureRequest.CONTROL_EFFECT_MODE_OFF)
+
+    fun setPicOptions(optionSelected: Int) : Int {
+        Log.wtf("XXX", "Value : " + optionSelected)
+
+        filterSelected = photoFilterSelection[optionSelected - 1]
+
+        // Apply filter selection
+        createCameraPreviewSession()
+
+        Log.wtf("XXX", "FilterSelected : " + filterSelected)
+
+        return filterSelected
     }
 
     override fun onClick(view: View) {
+        popupMenu = PopupMenu(this.activity, view.findViewById<Button>(R.id.btn_popupmenu))
         when (view.id) {
             R.id.btn_take_picture -> {
-                Log.wtf("XXX", "Tu fous ma gueule !")
                 val launchTimer = LaunchTimer()
                 launchTimer.execute("On lance le timer !")
             }
-            // FIXME Clic non détecté... Au boulot Félix !
-            R.id.btn_pic_option -> Log.wtf("XXX", "C'est de la merde !!!!")
+            R.id.btn_set_effect -> {
+                // setPicOptions(photoOptions)
+            }
+            R.id.btn_popupmenu -> {
+                popupMenu.inflate(R.menu.options_pics_menu)
+                popupMenu.setOnMenuItemClickListener {
+                    setPicOptions(it.toString()[0].toString().toInt())
+                    onOptionsItemSelected(it.setChecked(true))
+                    true
+                }
+                popupMenu.show()
+            }
         }
     }
 
@@ -634,9 +663,8 @@ class CameraPreview : Fragment(), View.OnClickListener,
                     CameraDevice.TEMPLATE_STILL_CAPTURE)?.apply {
                 addTarget(imageReader?.surface)
 
-                if (photoOptions) {
-                    this.set(CaptureRequest.CONTROL_EFFECT_MODE, CaptureRequest.CONTROL_EFFECT_MODE_SEPIA)
-                }
+                this.set(CaptureRequest.CONTROL_EFFECT_MODE, filterSelected)
+
             }?.also { setAutoFlash(it) }
 
             val captureCallback = object : CameraCaptureSession.CaptureCallback() {

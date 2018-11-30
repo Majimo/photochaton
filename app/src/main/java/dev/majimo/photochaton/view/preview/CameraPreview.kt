@@ -47,6 +47,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import android.util.Range
 import android.util.Size
 import android.util.SparseIntArray
 import android.view.LayoutInflater
@@ -518,8 +519,8 @@ class CameraPreview : Fragment(), View.OnClickListener,
 
                                 // Preview Filtre
                                 // TODO Remettre le filtre là si ça marche pas CONTROL_EFFECT_MODE
-                                previewRequestBuilder.set(CaptureRequest.CONTROL_EFFECT_MODE,
-                                        filterSelected)
+                                previewRequestBuilder.set(CaptureRequest.CONTROL_AE_LOCK, true)
+                                previewRequestBuilder.set(CaptureRequest.CONTROL_EFFECT_MODE, filterSelected)
 
                                 // Flash is automatically enabled when necessary.
                                 setAutoFlash(previewRequestBuilder)
@@ -579,7 +580,11 @@ class CameraPreview : Fragment(), View.OnClickListener,
 
     var filterSelected: Int = CaptureRequest.CONTROL_EFFECT_MODE_OFF
 
-    var photoFilterSelection = mutableListOf(CaptureRequest.CONTROL_EFFECT_MODE_SEPIA, CaptureRequest.CONTROL_EFFECT_MODE_MONO, CaptureRequest.CONTROL_EFFECT_MODE_SOLARIZE)
+    var photoFilterSelection = mutableListOf(
+            CaptureRequest.CONTROL_EFFECT_MODE_SEPIA,
+            CaptureRequest.CONTROL_EFFECT_MODE_MONO,
+            CaptureRequest.CONTROL_EFFECT_MODE_AQUA,
+            CaptureRequest.CONTROL_EFFECT_MODE_OFF)
 
     fun setPicOptions(optionSelected: Int) : Int {
         Log.wtf("XXX", "Value : " + optionSelected)

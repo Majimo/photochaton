@@ -68,10 +68,15 @@
 
         <Button
             android:id="@+id/btn_test_popupmenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="Popup"/>
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="50dp"
+            android:background="@color/colorAccent"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:text="Filtres"/>
 
     </FrameLayout>
 
